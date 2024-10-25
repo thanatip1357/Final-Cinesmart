@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Movie Recommendation</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="movie_title">Enter a movie title you like:</label>
+        <input type="text" name="movie_title" id="movie_title" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!-- main/templates/main/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CINESMART{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/css/styles.css' %}">
+    <!-- Include other CSS files as needed -->
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    
+    <!-- Messages Display -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}" data-context="{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <script src="{% static 'main/js/script.js' %}"></script>
+    {% block extra_scripts %}
+    {% endblock %}
+</body>
+</html>

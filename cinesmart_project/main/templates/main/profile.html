@@ -1,0 +1,25 @@
+<!-- main/templates/main/profile.html -->
+
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<header>
+    <!-- Include your header content if necessary -->
+</header>
+
+<div class="profile-container">
+    <h1>Your Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Any additional JavaScript for the profile page
+</script>
+{% endblock %}

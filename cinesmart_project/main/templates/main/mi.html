@@ -1,0 +1,288 @@
+{% extends 'main/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home | CINESMART{% endblock %}</title>
+    <link rel="stylesheet" href="{% static '/main/css/styles.css' %}">
+</head>
+<body>
+    {% block content %}
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <div id="sidebar-content">
+            <div class="logo">
+                <h2>CINESMART</h2>
+            </div>
+            <hr class="MuiDivider-root MuiDivider-fullWidth css-1px5dlw">
+            <div class="categories">
+                <h3>Categories</h3>
+                <ul>
+                    <li>
+                        <a href="#" data-category="popular">
+                            <img class="icon-img" src="{% static 'main/images/popular.jpg' %}" alt="Popular Icon"> Popular
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-category="top_rated">
+                            <img class="icon-img" src="{% static 'main/images/top rated.jpg' %}" alt="Top Rated Icon"> Top Rated
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-category="upcoming">
+                            <img class="icon-img" src="{% static 'main/images/upcoming.jpg' %}" alt="Upcoming Icon"> Upcoming
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="genres">
+                <h3>Genres</h3>
+                <ul>
+                    <li>
+                        <a href="#" data-genre-id="28">
+                            <img class="icon-img" src="{% static 'main/images/action.jpg' %}" alt="Action Icon"> Action
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="12">
+                            <img class="icon-img" src="{% static 'main/images/adventure.jpg' %}" alt="Adventure Icon"> Adventure
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="16">
+                            <img class="icon-img" src="{% static 'main/images/animation.jpg' %}" alt="Animation Icon"> Animation
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="35">
+                            <img class="icon-img" src="{% static 'main/images/comedy.jpg' %}" alt="Comedy Icon"> Comedy
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="18">
+                            <img class="icon-img" src="{% static 'main/images/drama.jpg' %}" alt="Drama Icon"> Drama
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="14">
+                            <img class="icon-img" src="{% static 'main/images/fantasy.jpg' %}" alt="Fantasy Icon"> Fantasy
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="27">
+                            <img class="icon-img" src="{% static 'main/images/horror.jpg' %}" alt="Horror Icon"> Horror
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="9648">
+                            <img class="icon-img" src="{% static 'main/images/mystery.jpg' %}" alt="Mystery Icon"> Mystery
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="10749">
+                            <img class="icon-img" src="{% static 'main/images/romance.jpg' %}" alt="Romance Icon"> Romance
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-genre-id="878">
+                            <img class="icon-img" src="{% static 'main/images/sci-fi.jpg' %}" alt="Sci-Fi Icon"> Sci-Fi
+                        </a>
+                    </li>
+                </ul>
+            </div>            
+        </div>
+    </aside>
+
+    <!-- Top Header -->
+    <header id="top-header">
+        <div id="header-content"> 
+            <div id="search">
+                <input type="text" id="search-bar" placeholder="Search for movies...">
+            </div>
+            <div id="auth-buttons">
+                {% if user.is_authenticated %}
+                <!-- Authenticated user content -->
+                <div id="user-profile">
+                    {% if user.userprofile.profile_picture %}
+                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="profile-icon">
+                    {% else %}
+                    <img src="{% static 'main/images/default_profile.png' %}" alt="Default Profile Picture" class="profile-icon">
+                    {% endif %}
+                    <span class="username">{{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+                {% else %}
+                <!-- Non-authenticated user buttons -->
+                <button id="signup-button">Signup</button>
+                <button id="login-button">Login</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- The Modal for Signup -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-signup">&times;</span>
+            <div class="form-container">
+                <h1>Sign Up</h1>
+                <form action="{% url 'signup' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        {{ signup_form.username.label_tag }}
+                        {{ signup_form.username }}
+                        {% if signup_form.username.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.username.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        {{ signup_form.email.label_tag }}
+                        {{ signup_form.email }}
+                        {% if signup_form.email.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.email.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Password1 Field -->
+                    <div class="form-group">
+                        {{ signup_form.password1.label_tag }}
+                        {{ signup_form.password1 }}
+                        {% if signup_form.password1.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.password1.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Password2 Field -->
+                    <div class="form-group">
+                        {{ signup_form.password2.label_tag }}
+                        {{ signup_form.password2 }}
+                        {% if signup_form.password2.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.password2.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Bio Field -->
+                    <div class="form-group">
+                        {{ signup_form.bio.label_tag }}
+                        {{ signup_form.bio }}
+                        {% if signup_form.bio.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.bio.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Profile Picture Field -->
+                    <div class="form-group">
+                        {{ signup_form.profile_picture.label_tag }}
+                        {{ signup_form.profile_picture }}
+                        {% if signup_form.profile_picture.errors %}
+                            <ul class="errorlist">
+                                {% for error in signup_form.profile_picture.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p class="switch-form">
+                    Already have an account?
+                    <a href="#" id="go-to-login">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal for Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-login">&times;</span>
+            <div class="form-container">
+                <h1>Login</h1>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        {{ login_form.username.label_tag }}
+                        {{ login_form.username }}
+                        {% if login_form.username.errors %}
+                            <ul class="errorlist">
+                                {% for error in login_form.username.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        {{ login_form.password.label_tag }}
+                        {{ login_form.password }}
+                        {% if login_form.password.errors %}
+                            <ul class="errorlist">
+                                {% for error in login_form.password.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="switch-form">
+                    Don't have an account?
+                    <a href="#" id="go-to-signup">Sign up here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <main>
+        <section id="movie-list">
+            <div id="movies"></div>
+        </section>
+    </main>
+
+    <!-- Movie Detail Modal -->
+    <div id="movie-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <div id="modal-body">
+                <!-- Movie details will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Button -->
+    <aside id="chatbot">
+        <button id="chatbot-button">CineBot</button>
+    </aside>
+
+    {% endblock %}
+    <script src="{% static 'main/js/script.js' %}"></script>
+    {% block extra_scripts %}
+    {% endblock %}
+</body>
+</html>

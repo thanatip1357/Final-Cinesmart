@@ -1,0 +1,11 @@
+pillow
+Django
+gunicorn
+django-crispy-forms
+pandas
+scikit-learn
+
+
+
+
+
